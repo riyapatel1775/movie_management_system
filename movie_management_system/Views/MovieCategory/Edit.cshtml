@@ -1,0 +1,29 @@
+@model movie_management_system.Models.MovieCategory
+
+@{
+    ViewBag.Title = "Edit Category";
+}
+
+<h2>Edit Category</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Cat_ID)
+
+    <p>
+        Category ID: <b>@Model.Cat_ID</b>
+    </p>
+
+    <p>
+        Category Name:<br />
+        @Html.TextBoxFor(model => model.Cat_Type)<br />
+        @Html.ValidationMessageFor(model => model.Cat_Type)
+    </p>
+
+    <p>
+        <input type="submit" value="Update Category" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

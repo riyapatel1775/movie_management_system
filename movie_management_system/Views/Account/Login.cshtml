@@ -1,0 +1,38 @@
+@model movie_management_system.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>User Login</h2>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style="color:red;">@ViewBag.ErrorMessage</p>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <p>
+        Email ID:<br />
+        @Html.TextBoxFor(model => model.Email_ID)<br />
+        @Html.ValidationMessageFor(model => model.Email_ID)
+    </p>
+
+    <p>
+        Password:<br />
+        @Html.PasswordFor(model => model.User_password)<br />
+        @Html.ValidationMessageFor(model => model.User_password)
+    </p>
+
+    <p>
+        <input type="submit" value="Login" />
+    </p>
+
+    <p>
+        Don't have an account? @Html.ActionLink("Register here", "Register")
+    </p>
+}

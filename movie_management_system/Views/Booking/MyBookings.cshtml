@@ -1,0 +1,47 @@
+@model IEnumerable<movie_management_system.Models.Booking>
+
+@{
+    ViewBag.Title = "My Bookings";
+}
+
+<h2>My Bookings</h2>
+
+<p>
+    @Html.ActionLink("Book New Ticket", "Create")
+</p>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Booking ID</th>
+        <th>Movie Name</th>
+        <th>Category</th>
+        <th>Rate (Rs.)</th>
+        <th>Tickets</th>
+        <th>Total Amount (Rs.)</th>
+        <th>Action</th>
+    </tr>
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.booking_ID</td>
+                <td>@item.Movie_name</td>
+                <td>@item.Cat_Type</td>
+                <td>@item.rate.ToString("0.00")</td>
+                <td>@item.no_of_Tickets</td>
+                <td>@item.amount.ToString("0.00")</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.booking_ID }) |
+                    @Html.ActionLink("Cancel", "Delete", new { id = item.booking_ID }, new { onclick = "return confirm('Are you sure you want to cancel this booking?');" })
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="7">No bookings found.</td>
+        </tr>
+    }
+</table>

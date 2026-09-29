@@ -1,0 +1,24 @@
+@model movie_management_system.Models.MovieCategory
+
+@{
+    ViewBag.Title = "Add Category";
+}
+
+<h2>Add Category</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <p>
+        Category Name:<br />
+        @Html.TextBoxFor(model => model.Cat_Type)<br />
+        @Html.ValidationMessageFor(model => model.Cat_Type)
+    </p>
+
+    <p>
+        <input type="submit" value="Save Category" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

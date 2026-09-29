@@ -1,0 +1,59 @@
+@model movie_management_system.Models.Booking
+
+@{
+    ViewBag.Title = "Edit Booking";
+}
+
+<h2>Edit Booking #@Model.booking_ID</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.booking_ID)
+    @Html.HiddenFor(model => model.Movie_ID)
+    @Html.HiddenFor(model => model.Cat_ID)
+
+    <p>
+        Movie: <b>@Model.Movie_name (@Model.Cat_Type)</b>
+    </p>
+
+    <p>
+        Ticket Rate (Rs.):<br />
+        <input type="text" id="rateBox" value="@Model.rate.ToString("0.00")" readonly />
+    </p>
+
+    <p>
+        Number of Tickets:<br />
+        @Html.TextBoxFor(model => model.no_of_Tickets, new { type = "number", min = "1", max = "10", id = "no_of_Tickets" })<br />
+        @Html.ValidationMessageFor(model => model.no_of_Tickets)
+    </p>
+
+    <p>
+        Total Amount (Rs.):<br />
+        @Html.TextBoxFor(model => model.amount, "{0:0.00}", new { id = "amount", @readonly = "readonly" })
+    </p>
+
+    <p>
+        <input type="submit" value="Update Booking" /> |
+        @Html.ActionLink("Back to My Bookings", "MyBookings")
+    </p>
+}
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            var rate = parseFloat($("#rateBox").val()) || 0;
+
+            $("#no_of_Tickets").on("input change", function () {
+                var tickets = parseInt($(this).val()) || 0;
+                if (tickets > 0 && rate > 0) {
+                    var total = rate * tickets;
+                    $("#amount").val(total.toFixed(2));
+                } else {
+                    $("#amount").val("0.00");
+                }
+            });
+        });
+    </script>
+}

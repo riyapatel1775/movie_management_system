@@ -1,0 +1,18 @@
+@{
+    ViewBag.Title = "Home";
+}
+
+<h2>Movie Booking System</h2>
+
+<hr />
+
+<ul>
+    <li>@Html.ActionLink("Book Movie", "BookMovie", "Booking")</li>
+    <li>@Html.ActionLink("View My Bookings", "MyBookings", "Booking")</li>
+    <li>@Html.ActionLink("Manage Movies", "Index", "Movie")</li>
+    <li>@Html.ActionLink("Manage Movie Categories", "Index", "MovieCategory")</li>
+    <li>@Html.ActionLink("Search Movies by Category", "Search", "Movie")</li>
+    <li>@Html.ActionLink("User Profile", "Index", "Profile")</li>
+    <li>@Html.ActionLink("User Login", "Login", "Account")</li>
+    <li>@Html.ActionLink("User Registration", "Register", "Account")</li>
+</ul>

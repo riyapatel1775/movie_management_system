@@ -1,0 +1,58 @@
+@model IEnumerable<movie_management_system.Models.Movie>
+
+@{
+    ViewBag.Title = "Search Movies";
+    var categoryList = ViewBag.CategoryList as List<SelectListItem>;
+    int? selectedCatId = ViewBag.SelectedCatID as int?;
+}
+
+<h2>Search Movies by Category</h2>
+
+@using (Html.BeginForm("Search", "Movie", FormMethod.Get))
+{
+    <p>
+        Select Category:
+        <select name="catId" id="catId">
+            <option value="">-- All Categories --</option>
+            @if (categoryList != null)
+            {
+                foreach (var cat in categoryList)
+                {
+                    <option value="@cat.Value" @(selectedCatId.HasValue && selectedCatId.Value.ToString() == cat.Value ? "selected" : "")>
+                        @cat.Text
+                    </option>
+                }
+            }
+        </select>
+        <input type="submit" value="Search" /> |
+        @Html.ActionLink("Reset", "Search")
+    </p>
+}
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Movie Name</th>
+        <th>Category</th>
+        <th>Release Date</th>
+        <th>Ticket Rate (Rs.)</th>
+    </tr>
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var movie in Model)
+        {
+            <tr>
+                <td>@movie.Movie_name</td>
+                <td>@movie.Cat_Type</td>
+                <td>@movie.Release_Date.ToString("yyyy-MM-dd")</td>
+                <td>@movie.rate.ToString("0.00")</td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="4">No movies found.</td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,42 @@
+@model movie_management_system.Models.Movie
+
+@{
+    ViewBag.Title = "Add Movie";
+}
+
+<h2>Add Movie</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <p>
+        Movie Name:<br />
+        @Html.TextBoxFor(model => model.Movie_name)<br />
+        @Html.ValidationMessageFor(model => model.Movie_name)
+    </p>
+
+    <p>
+        Category:<br />
+        @Html.DropDownListFor(model => model.Cat_ID, Model.CategoryList, "-- Select Category --")<br />
+        @Html.ValidationMessageFor(model => model.Cat_ID)
+    </p>
+
+    <p>
+        Release Date:<br />
+        @Html.TextBoxFor(model => model.Release_Date, "{0:yyyy-MM-dd}", new { type = "date" })<br />
+        @Html.ValidationMessageFor(model => model.Release_Date)
+    </p>
+
+    <p>
+        Ticket Rate (Rs.):<br />
+        @Html.TextBoxFor(model => model.rate, new { type = "number", step = "0.01" })<br />
+        @Html.ValidationMessageFor(model => model.rate)
+    </p>
+
+    <p>
+        <input type="submit" value="Save Movie" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

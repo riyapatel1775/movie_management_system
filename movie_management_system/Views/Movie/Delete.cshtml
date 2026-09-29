@@ -1,0 +1,23 @@
+@model movie_management_system.Models.Movie
+
+@{
+    ViewBag.Title = "Delete Movie";
+}
+
+<h2>Delete Movie</h2>
+
+<p style="color:red; font-weight:bold;">Are you sure you want to delete this movie?</p>
+
+<div>
+    <p><strong>Movie Name:</strong> @Model.Movie_name</p>
+    <p><strong>Category:</strong> @Model.Cat_Type</p>
+    <p><strong>Release Date:</strong> @Model.Release_Date.ToString("yyyy-MM-dd")</p>
+    <p><strong>Rate:</strong> @Model.rate.ToString("0.00")</p>
+</div>
+
+@using (Html.BeginForm("Delete", "Movie", new { id = Model.Movie_ID }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    @Html.ActionLink("Cancel", "Index", null, new { style = "margin-left:10px;" })
+}

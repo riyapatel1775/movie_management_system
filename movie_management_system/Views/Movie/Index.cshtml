@@ -1,0 +1,37 @@
+@model IEnumerable<movie_management_system.Models.Movie>
+
+@{
+    ViewBag.Title = "Movies";
+}
+
+<h2>Movies List</h2>
+
+<p>
+    @Html.ActionLink("Add New Movie", "Create") |
+    @Html.ActionLink("Search Movies by Category", "Search")
+</p>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Movie ID</th>
+        <th>Movie Name</th>
+        <th>Category</th>
+        <th>Release Date</th>
+        <th>Ticket Rate (Rs.)</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Movie_ID</td>
+            <td>@item.Movie_name</td>
+            <td>@item.Cat_Type</td>
+            <td>@item.Release_Date.ToString("yyyy-MM-dd")</td>
+            <td>@item.rate.ToString("0.00")</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Movie_ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Movie_ID }, new { onclick = "return confirm('Are you sure you want to delete this movie?');" })
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,30 @@
+@model IEnumerable<movie_management_system.Models.MovieCategory>
+
+@{
+    ViewBag.Title = "Movie Categories";
+}
+
+<h2>Movie Categories</h2>
+
+<p>
+    @Html.ActionLink("Add New Category", "Create")
+</p>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Category ID</th>
+        <th>Category Name</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Cat_ID</td>
+            <td>@item.Cat_Type</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Cat_ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Cat_ID }, new { onclick = "return confirm('Are you sure you want to delete?');" })
+            </td>
+        </tr>
+    }
+</table>

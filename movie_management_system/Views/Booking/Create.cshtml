@@ -1,0 +1,110 @@
+@model movie_management_system.Models.Booking
+
+@{
+    ViewBag.Title = "Book Movie";
+}
+
+<h2>Book Movie</h2>
+
+@using (Html.BeginForm("BookMovie", "Booking", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <p>
+        Select Category:<br />
+        @Html.DropDownListFor(model => model.Cat_ID, Model.CategoryList, "-- Select Category --", new { id = "Cat_ID" })<br />
+        @Html.ValidationMessageFor(model => model.Cat_ID)
+    </p>
+
+    <p>
+        Select Movie:<br />
+        @Html.DropDownListFor(model => model.Movie_ID, Model.MovieList, "-- Select Movie --", new { id = "Movie_ID" })<br />
+        @Html.ValidationMessageFor(model => model.Movie_ID)
+    </p>
+
+    <p>
+        Movie Rate (Rs.):<br />
+        <input type="text" id="rateBox" readonly />
+    </p>
+
+    <p>
+        Number of Tickets:<br />
+        @Html.TextBoxFor(model => model.no_of_Tickets, new { type = "number", min = "1", max = "10", id = "no_of_Tickets" })<br />
+        @Html.ValidationMessageFor(model => model.no_of_Tickets)
+    </p>
+
+    <p>
+        Total Amount (Rs.):<br />
+        @Html.TextBoxFor(model => model.amount, new { id = "amount", @readonly = "readonly" })
+    </p>
+
+    <p>
+        <input type="submit" value="Book Movie" /> |
+        @Html.ActionLink("View My Bookings", "MyBookings")
+    </p>
+}
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            var movieRate = 0;
+
+            $("#Cat_ID").change(function () {
+                var catId = $(this).val();
+
+                $("#Movie_ID").empty();
+                $("#Movie_ID").append($('<option></option>').val("").html("-- Select Movie --"));
+                $("#rateBox").val("");
+                $("#amount").val("");
+                movieRate = 0;
+
+                if (catId !== "") {
+                    $.ajax({
+                        url: '@Url.Action("GetMoviesByCategory", "Booking")',
+                        type: 'GET',
+                        data: { catId: catId },
+                        success: function (data) {
+                            $.each(data, function (i, item) {
+                                $("#Movie_ID").append(
+                                    $('<option></option>')
+                                        .val(item.Value)
+                                        .html(item.Text)
+                                        .attr("data-rate", item.Rate)
+                                );
+                            });
+                        }
+                    });
+                }
+            });
+
+            $("#Movie_ID").change(function () {
+                var rate = $(this).find("option:selected").attr("data-rate");
+
+                if (rate) {
+                    movieRate = parseFloat(rate);
+                    $("#rateBox").val(movieRate.toFixed(2));
+                    calcTotal();
+                } else {
+                    movieRate = 0;
+                    $("#rateBox").val("");
+                    $("#amount").val("");
+                }
+            });
+
+            $("#no_of_Tickets").on("input change", function () {
+                calcTotal();
+            });
+
+            function calcTotal() {
+                var tickets = parseInt($("#no_of_Tickets").val()) || 0;
+                if (movieRate > 0 && tickets > 0) {
+                    var total = movieRate * tickets;
+                    $("#amount").val(total.toFixed(2));
+                } else {
+                    $("#amount").val("");
+                }
+            }
+        });
+    </script>
+}
